@@ -7,6 +7,8 @@ app.innerHTML = `
   <a href="https://vitejs.dev/guide/features.html" target="_blank">Documentation</a>
 `
 
+
+
 interface IQuadro{
   id: string,
   content: string,
@@ -82,8 +84,36 @@ const geraNumeros = (quadro:IQuadro[][]) => {
     return quadro
 }
 
+const teveDerrota = (quadro:IQuadro[][]) => {
+  const linha = quadro.length
+  const coluna = quadro[0].length
+  for(let i=0; i<linha;i++){
+    for(let j=0;j<coluna;j++){
+      if(quadro[i][j].content==='💣' && quadro[i][j].hide===false)
+        return true
+    }
+  }
+  return false
+}
 
+const teveVitoria = (quadro:IQuadro[][]) => {
+  const linha = quadro.length
+  const coluna = quadro[0].length
+  for(let i=0; i<linha;i++){
+    for(let j=0;j<coluna;j++){
+      if(quadro[i][j].content==='💣' && quadro[i][j].hide===false)
+        return false
+      if(quadro[i][j].content!=='💣' && quadro[i][j].hide===true)
+        return true
+    }
+  }
+  return false
+}
+
+let quadroLimpo = geraQuadro()
 let quadro = geraQuadro()
 let quadroBomba = geraBombas(quadro,20)
 let quadroBombaNumeros = geraNumeros(quadroBomba)
+
+console.log(teveDerrota(quadroLimpo))
 printQuadro(quadroBombaNumeros)
