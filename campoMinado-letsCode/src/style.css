@@ -1,8 +1,32 @@
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  justify-content: center;
+  width: 60em;
+  border: 3px solid green;
+  /* padding: 10px; */
+}
+#board{
+  display: inline-block;
+  column-count: 20;
+  padding-left: 50em;
+  padding-right: 50em;
+  /* padding-bottom: 5em; */
+  column-gap: 0px;
+}
+
+.quadradinho{
+  width:25px;
+  height:25px;
+  align-items: center;
+  justify-content: center;
+  background-color:#ccc;
+  border:1px solid darkgreen;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+
+#placar{
+ visibility: hidden;
 }
