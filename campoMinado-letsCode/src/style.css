@@ -5,7 +5,7 @@
   margin: auto;
   justify-content: center;
   width: 60em;
-  border: 3px solid green;
+  border: 10px solid green;
   /* padding: 10px; */
 }
 #board{
@@ -29,4 +29,8 @@
 
 #placar{
  visibility: hidden;
+ border: 2px solid darkgreen;
+ padding: 0.5em;
+ margin: 2em;
+ font-size: 1.5em;
 }
