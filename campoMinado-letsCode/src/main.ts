@@ -73,14 +73,14 @@ const geraNumeros = (quadro:IQuadradinho[][]) => {
     for(let i=0; i<linha;i++){
       for(let j=0;j<coluna;j++){
         if(ehBomba(i,j)){
-          if(i-1 > 0 && j-1 > 0 && !ehBomba(i-1,j-1)) quadro[i-1][j-1].content = (Number(quadro[i-1][j-1].content) + 1).toString()
-          if(i-1 > 0 && !ehBomba(i-1,j)) quadro[i-1][j].content = (Number(quadro[i-1][j].content) + 1).toString()
-          if(i-1 > 0 && j+1 < coluna && !ehBomba(i-1,j+1)) quadro[i-1][j+1].content = (Number(quadro[i-1][j+1].content) + 1).toString()
+          if(i-1 >= 0 && j-1 >= 0 && !ehBomba(i-1,j-1)) quadro[i-1][j-1].content = (Number(quadro[i-1][j-1].content) + 1).toString()
+          if(i-1 >= 0 && !ehBomba(i-1,j)) quadro[i-1][j].content = (Number(quadro[i-1][j].content) + 1).toString()
+          if(i-1 >= 0 && j+1 < coluna && !ehBomba(i-1,j+1)) quadro[i-1][j+1].content = (Number(quadro[i-1][j+1].content) + 1).toString()
 
-          if(j-1 > 0 && !ehBomba(i,j-1)) quadro[i][j-1].content = (Number(quadro[i][j-1].content) + 1).toString()
+          if(j-1 >= 0 && !ehBomba(i,j-1)) quadro[i][j-1].content = (Number(quadro[i][j-1].content) + 1).toString()
           if(j+1 < coluna && !ehBomba(i,j+1)) quadro[i][j+1].content = (Number(quadro[i][j+1].content) + 1).toString()
 
-          if(i+1 < linha && j-1 > 0 && !ehBomba(i+1,j-1)) quadro[i+1][j-1].content = (Number(quadro[i+1][j-1].content) + 1).toString()
+          if(i+1 < linha && j-1 >= 0 && !ehBomba(i+1,j-1)) quadro[i+1][j-1].content = (Number(quadro[i+1][j-1].content) + 1).toString()
           if(i+1 < linha && !ehBomba(i+1,j)) quadro[i+1][j].content = (Number(quadro[i+1][j].content) + 1).toString()
           if(i+1 < linha && j+1 < coluna && !ehBomba(i+1,j+1)) quadro[i+1][j+1].content = (Number(quadro[i+1][j+1].content)+ 1).toString()
         }
@@ -96,8 +96,9 @@ const revelaConteudo = (arr: IQuadradinho) => {
   if(arr.hide == true){
     const item = document.createElement('div')
     item.className = 'quadradinho-revelado'
-    if(arr.content === ""){
+    if(arr.content === "" || arr.content === "0"){
         item.textContent = '0'
+        abre0s(arr)
     }else{
         item.textContent = `${arr.content}`}
 
@@ -108,7 +109,6 @@ const revelaConteudo = (arr: IQuadradinho) => {
 
     arr.hide = false
 
-    abre0s(arr)
 
     teveDerrota(arr)
     teveVitoria(quadro)
@@ -149,29 +149,18 @@ const renderizaQuadradinho = (arr: IQuadradinho) => {
     containerTabuleiro?.appendChild(item) 
 }
 
-// const teveDerrota = (quadro:IQuadro[][]) => {
-//   const linha = quadro.length
-//   const coluna = quadro[0].length
-//   for(let i=0; i<linha;i++){
-//     for(let j=0;j<coluna;j++){
-//       if(quadro[i][j].content==='💣' && quadro[i][j].hide===false){
-//         placar[0].derrotas = placar[0].derrotas + 1
-//         localStorage.setItem('placarCampoMinado', JSON.stringify(placar))
-//         renderizaPlacar()
-//         console.log('Aparecer')
-//       }
-//     }
-//   }
-//   return false
-// }
 
 const teveDerrota = (arr: IQuadradinho) => {
-  if(arr.content ==='💣'){
-    placar[0].derrotas = placar[0].derrotas + 1
-    localStorage.setItem('placarCampoMinado', JSON.stringify(placar))
-    renderizaPlacar()
-    novoJogo()
-  }
+  setTimeout(()=>{
+    if(arr.content ==='💣'){
+      alert("Game Over")
+      placar[0].derrotas = placar[0].derrotas + 1
+      localStorage.setItem('placarCampoMinado', JSON.stringify(placar))
+      renderizaPlacar()
+      novoJogo()
+    }
+
+  },1000)
 }
 
 const teveVitoria = (quadro:IQuadradinho[][]) => {
@@ -186,13 +175,6 @@ const teveVitoria = (quadro:IQuadradinho[][]) => {
           renderizaPlacar()
         }
       }
-      // {
-      //   placar[0].vitorias = placar[0].vitorias + 1
-      //   localStorage.setItem('placarCampoMinado', JSON.stringify(placar))
-      //   renderizaPlacar()
-      //   novoJogo()
-      // }
-      
     }
   }
   return false
