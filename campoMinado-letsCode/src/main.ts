@@ -89,7 +89,7 @@ const containerTabuleiro: HTMLElement | null = document.getElementById("board")
 
 const revelaConteudo = (arr: IQuadradinho) => {
 
-  if(arr.hide == true){
+  if(arr.hide == true && arr.bandeirinha == false){
     const item = document.createElement('div')
     item.className = 'quadradinho-revelado'
     if(arr.content === "" || arr.content === "0"){
@@ -129,18 +129,23 @@ const abre0s = (quadradinho : IQuadradinho) => {
   },10)
 }
 
-// const colocaBandeirinha = (arr: IQuadradinho) => {
-//   if(arr.bandeirinha == false){
-//     const item = document.createElement('div')
-//     item.className = 'quadradinho-bandeirinha'
-//     item.textContent = "🚩"
+let contadorBandeirinha: number = 0
 
-//     const containerQuadradinho = document.getElementById(`q${arr.id}`)
+const colocaBandeirinha = (arr: IQuadradinho) => {
+  if(arr.bandeirinha == false && contadorBandeirinha < 40){
+    const item = document.createElement('div')
+    item.className = 'quadradinho-bandeirinha'
+    item.textContent = "🚩"
+    
 
-//     containerQuadradinho?.appendChild(item)
-//     arr.bandeirinha = true
-//   }
-// }
+    const containerQuadradinho = document.getElementById(`q${arr.id}`)
+
+    containerQuadradinho?.appendChild(item)
+    arr.bandeirinha = true
+
+    contadorBandeirinha = contadorBandeirinha + 1
+  }
+}
 
 const renderizaQuadradinho = (arr: IQuadradinho) => {
     
@@ -150,6 +155,7 @@ const renderizaQuadradinho = (arr: IQuadradinho) => {
           revelaConteudo(arr)
         } 
         if(e.button === 2){
+          console.log('Teste')
           colocaBandeirinha(arr)
         }
     }
