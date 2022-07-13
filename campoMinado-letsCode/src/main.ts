@@ -4,6 +4,7 @@ interface IQuadradinho{
   id: string,
   content: string,
   hide: boolean,
+  bandeirinha: boolean,
 }
 
 interface IPlacar{
@@ -11,12 +12,7 @@ interface IPlacar{
   derrotas: number
 }
 
-// let placar: [IPlacar] = JSON.parse(localStorage.getItem("placarCampoMinado") || "{vitorias: 0, derrotas: 0}")
-// console.log(placar)
-let placar: [IPlacar] = [{
-  vitorias: 0,
-  derrotas: 0
-}]
+let placar: [IPlacar] = JSON.parse(localStorage.getItem('placarCampoMinado') || "[{\"vitorias\":0,\"derrotas\":0}]")
 
 const geraQuadro = () => {
   let quadro : IQuadradinho[][] = []
@@ -24,7 +20,7 @@ const geraQuadro = () => {
   for(let i=0;i<20;i++){
       let array :IQuadradinho[] = []
       for(let j=0;j<20;j++){
-          item = {id:(i.toString()+","+j.toString()), content:'0',hide:true}
+          item = {id:(i.toString()+","+j.toString()), content:'0',hide:true,bandeirinha:false}
           array.push(item)
       }
       quadro.push(array)
@@ -33,7 +29,7 @@ const geraQuadro = () => {
 }
 
 const geraBombas = (quadro:IQuadradinho[][], quantidade:number) => {
-  if(quantidade > quadro.length+quadro[0].length) return quadro
+  if(quantidade > quadro.length*quadro[0].length) return quadro
   for(let i=0;i<quantidade;i++){
       let linha = Math.round(Math.random()*(quadro.length-1))
       let coluna = Math.round(Math.random()*(quadro[0].length-1))
@@ -102,7 +98,6 @@ const revelaConteudo = (arr: IQuadradinho) => {
     }else{
         item.textContent = `${arr.content}`}
 
-    
     const containerQuadradinho = document.getElementById(`q${arr.id}`)
 
     containerQuadradinho?.appendChild(item)
@@ -134,13 +129,31 @@ const abre0s = (quadradinho : IQuadradinho) => {
   },10)
 }
 
+const colocaBandeirinha = (arr: IQuadradinho) => {
+  if(arr.bandeirinha == false){
+    const item = document.createElement('div')
+    item.className = 'quadradinho-bandeirinha'
+    item.textContent = "🚩"
+
+    const containerQuadradinho = document.getElementById(`q${arr.id}`)
+
+    containerQuadradinho?.appendChild(item)
+    arr.bandeirinha = true
+  }
+}
+
 const renderizaQuadradinho = (arr: IQuadradinho) => {
     
     const item = document.createElement('div')
-    item.onclick = () => {
-        // console.log(`${arr.id}`)
-        revelaConteudo(arr)
+    item.onmousedown = (e) => {
+        if(e.button === 0){
+          revelaConteudo(arr)
+        } 
+        if(e.button === 2){
+          colocaBandeirinha(arr)
+        }
     }
+
     item.className = 'quadradinho'
     item.id = `q${arr.id}`
     const span = document.createElement('span')
@@ -160,7 +173,7 @@ const teveDerrota = (arr: IQuadradinho) => {
       novoJogo()
     }
 
-  },1000)
+  },500)
 }
 
 const teveVitoria = (quadro:IQuadradinho[][]) => {
@@ -199,7 +212,7 @@ const renderizaPlacar = () => {
   }   
 }
 
-let quadroLimpo = geraQuadro()
+// let quadroLimpo = geraQuadro()
 let quadro = geraQuadro()
 let quadroBomba = geraBombas(quadro,40)
 let quadroBombaNumeros = geraNumeros(quadroBomba)
