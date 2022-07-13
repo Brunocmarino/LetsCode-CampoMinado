@@ -129,18 +129,18 @@ const abre0s = (quadradinho : IQuadradinho) => {
   },10)
 }
 
-const colocaBandeirinha = (arr: IQuadradinho) => {
-  if(arr.bandeirinha == false){
-    const item = document.createElement('div')
-    item.className = 'quadradinho-bandeirinha'
-    item.textContent = "🚩"
+// const colocaBandeirinha = (arr: IQuadradinho) => {
+//   if(arr.bandeirinha == false){
+//     const item = document.createElement('div')
+//     item.className = 'quadradinho-bandeirinha'
+//     item.textContent = "🚩"
 
-    const containerQuadradinho = document.getElementById(`q${arr.id}`)
+//     const containerQuadradinho = document.getElementById(`q${arr.id}`)
 
-    containerQuadradinho?.appendChild(item)
-    arr.bandeirinha = true
-  }
-}
+//     containerQuadradinho?.appendChild(item)
+//     arr.bandeirinha = true
+//   }
+// }
 
 const renderizaQuadradinho = (arr: IQuadradinho) => {
     
@@ -177,20 +177,33 @@ const teveDerrota = (arr: IQuadradinho) => {
 }
 
 const teveVitoria = (quadro:IQuadradinho[][]) => {
+
   const linha = quadro.length
   const coluna = quadro[0].length
+  let ganhou = true
   for(let i=0; i<linha;i++){
     for(let j=0;j<coluna;j++){
       if(quadro[i][j].content==='💣' && quadro[i][j].hide===false){
-        if(quadro[i][j].content!=='💣' && quadro[i][j].hide===true){
-          placar[0].vitorias = placar[0].vitorias + 1
-          localStorage.setItem('placarCampoMinado', JSON.stringify(placar))
-          renderizaPlacar()
-        }
+        // Clicou em uma bomba - Bomba está revelada
+        ganhou=false
+      }
+      if(quadro[i][j].content!=='💣' && quadro[i][j].hide===true){
+        // Há algum quadrado !bomba não clicado ainda
+        ganhou=false
       }
     }
   }
+  if(ganhou){
+    placar[0].vitorias = placar[0].vitorias + 1
+    localStorage.setItem('placarCampoMinado', JSON.stringify(placar))
+    renderizaPlacar()
+    setTimeout(()=>{
+    alert("Vitóriaaaaa")
+    },500)
+  }
+
   return false
+
 }
 
 const novoJogo = () => {
