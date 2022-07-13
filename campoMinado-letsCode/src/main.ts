@@ -132,18 +132,30 @@ const abre0s = (quadradinho : IQuadradinho) => {
 let contadorBandeirinha: number = 0
 
 const colocaBandeirinha = (arr: IQuadradinho) => {
-  if(arr.bandeirinha == false && contadorBandeirinha < 40){
+  
+  if(arr.bandeirinha == false && arr.hide == true &&contadorBandeirinha < 40){
     const item = document.createElement('div')
     item.className = 'quadradinho-bandeirinha'
     item.textContent = "🚩"
     
-
     const containerQuadradinho = document.getElementById(`q${arr.id}`)
 
     containerQuadradinho?.appendChild(item)
     arr.bandeirinha = true
 
     contadorBandeirinha = contadorBandeirinha + 1
+  }
+  else if(arr.bandeirinha == true && arr.hide == true){
+
+    const containerQuadradinho = document.getElementById(`q${arr.id}`)
+    
+    while(containerQuadradinho?.firstChild){
+      containerQuadradinho?.removeChild(containerQuadradinho?.firstChild)
+    }
+
+    arr.bandeirinha = false
+
+    contadorBandeirinha = contadorBandeirinha - 1
   }
 }
 
@@ -155,7 +167,6 @@ const renderizaQuadradinho = (arr: IQuadradinho) => {
           revelaConteudo(arr)
         } 
         if(e.button === 2){
-          console.log('Teste')
           colocaBandeirinha(arr)
         }
     }
